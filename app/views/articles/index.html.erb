@@ -1,0 +1,16 @@
+<h3>List of articles</h3>
+<hr>
+
+<table style="width: 50%;" border="3" cellpadding="5">
+  <tbody>
+  <% @articles.each do |article| %>
+  <tr>
+  <td style="width: 70%;"><%= link_to article.title, article_path(article) %></td>
+  <td style="width: 15%;"><%= link_to "edit", edit_article_path(article) %></td>
+  <td style="width: 15%;"><%= link_to "delete", article_path(article), method: :delete %></td>
+  </tr>
+  <% end %>
+  </tbody>
+  </table>
+  <br>
+  <%= link_to "create a new article", new_article_path %>
