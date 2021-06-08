@@ -1,16 +1,27 @@
-<h3>List of articles</h3>
-<hr>
+<h1 class="text-center mt-3">Listing all articles</h1>
 
-<table style="width: 50%;" border="3" cellpadding="5">
-  <tbody>
+<div class="container">
   <% @articles.each do |article| %>
-  <tr>
-  <td style="width: 70%;"><%= link_to article.title, article_path(article) %></td>
-  <td style="width: 15%;"><%= link_to "edit", edit_article_path(article) %></td>
-  <td style="width: 15%;"><%= link_to "delete", article_path(article), method: :delete %></td>
-  </tr>
+    <div class="row justify-content-md-center">
+      <div class="col-8 mt-3">
+        <div class="card text-center shadow mb-5 bg-white rounded">
+          <div class="card-header font-italic">
+            by Paulo Otero
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to article.title, article_path(article), class: "text-success" %></h5>
+            <p class="card-text"><%= truncate(article.description, length: 100) %></p>
+            <%= link_to "View", article_path(article), class: "btn btn-outline-success" %>
+            <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-info" %>
+            <%= link_to "Delete", article_path(article), method: :delete, class: "btn btn-outline-danger" %>
+          </div>
+          <div class="card-footer text-muted">
+            <small>
+              Created <%= time_ago_in_words(article.created_at) %> ago, edited <%= time_ago_in_words(article.updated_at) %> ago
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
   <% end %>
-  </tbody>
-  </table>
-  <br>
-  <%= link_to "create a new article", new_article_path %>
+</div>

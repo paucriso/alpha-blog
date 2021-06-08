@@ -1,0 +1,28 @@
+@import 'bootstrap/dist/css/bootstrap';
+
+.navbar-brand {
+  text-transform: uppercase;
+  font-size: 1.7em;
+}
+
+.jumbotron {
+  background-image: asset-url('writer.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 425px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+#page-content {
+  flex: 1 0 auto;
+  background-color: lightgrey;
+}
+
+#sticky-footer {
+  flex-shrink: none;
+}
