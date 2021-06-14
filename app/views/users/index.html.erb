@@ -1,0 +1,38 @@
+<h1 class="text-center mt-3">Alpha bloggers</h1>
+<div class="flickr_pagination mb-3">
+  <%= will_paginate @users, :container => false %>
+</div>
+<div class="container">
+  <% @users.each do |user| %>
+    <div class="row justify-content-md-center">
+      <div class="col-8 mt-3">
+        <div class="card text-center shadow mb-5 bg-white rounded">
+          <div class="card-header font-italic">
+            <%= link_to user.username, user_path(user), class: "text-primary" %>
+          </div>
+          <div class="card-body">
+            <%= gravatar_for user, size: 150 %>
+            <p class="card-text"><%= pluralize(user.articles.size, "article") %></p>
+            <%= link_to "View profile", user_path(user), class: "btn btn-outline-success" %>
+            <% if logged_in? %>
+              <% if user == current_user %>
+                <%= link_to "Edit profile", edit_user_path(user), class: "btn btn-outline-info" %>
+              <% end %>
+              <% if current_user.admin? %>
+                <%= link_to "Delete user", user_path(user), class: "btn btn-outline-danger", method: :delete, data: {confirm: "Are you sure?"} %>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="card-footer text-muted">
+            <small>
+              Joined <%= time_ago_in_words(user.created_at) %> ago
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="flickr_pagination mb-3">
+  <%= will_paginate @articles, :container => false %>
+</div>

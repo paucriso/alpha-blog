@@ -1,7 +1,14 @@
 class UsersController < ApplicationController
+  before_action :find_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_user, only: [:edit, :update]
+  before_action :require_same_user, only: [:edit, :update, :destroy]
+
+  def index 
+    @users = User.paginate(page: params[:page], per_page: 3)
+  end
 
   def show 
-    find_user
+    @articles = @user.articles.paginate(page: params[:page], per_page: 3)
   end
 
   def new
@@ -12,24 +19,30 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save 
       flash[:notice] = "welcome to the Alpha blog #{@user.username}. Sign up successfully"
-      redirect_to articles_path
+      session[:user_id] = @user.id
+      redirect_to @user
     else
       render 'new'
     end
   end
 
   def edit 
-    find_user
   end
 
   def update
-    find_user
     if @user.update(user_params)
       flash[:notice] = "User updated successfully"
-      redirect_to articles_path
+      redirect_to @user
     else
       render 'edit'
     end
+  end
+
+  def destroy 
+    @user.destroy
+    session[:user_id] = nil if @user == currrent_user
+    flash[:notice] = "Account and all associated articles deleted"
+    redirect_to articles_path
   end
 
   private
@@ -40,5 +53,12 @@ class UsersController < ApplicationController
 
   def find_user 
     @user = User.find(params[:id])
+  end
+
+  def require_same_user 
+    if current_user != @user && !current_user.admin?
+      flash[:alert] = "You can only edit your account"
+      redirect_to @user
+    end
   end
 end
